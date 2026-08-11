@@ -5,8 +5,6 @@ import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
 import io.cucumber.java.en.*;
 
-import java.awt.*;
-
 public class Homepage_Steps {
 
     public BrowserManager browserManager;
@@ -29,8 +27,7 @@ public class Homepage_Steps {
     @When("I click on the contact us button")
     public void i_click_on_the_contact_us_button() {
 
-        browserManager.page = browserManager.context.waitForPage(() -> {
-            browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("CONTACT US Form")).click();
+        browserManager.page = browserManager.context.waitForPage(() -> {browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("CONTACT US Form")).click();
         });
 
         browserManager.page.bringToFront();
