@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import io.cucumber.java.en.*;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
 public class Login_Steps {
@@ -40,13 +41,13 @@ public class Login_Steps {
     public void i_type_a_password() {
         browserManager.page.getByPlaceholder("Password").click();
         browserManager.page.getByPlaceholder("Password").fill("webdriver123");
-        System.out.println("password entered");
     }
 
     @And("I click on the login button")
     public void i_click_on_the_login_button() {
 
-        browserManager.page.onceDialog(dialog -> {loginMessage = dialog.message();
+        browserManager.page.onceDialog(dialog -> {
+            loginMessage = dialog.message();
             System.out.println("Login popup: " + loginMessage);
             dialog.accept();
         });
@@ -69,14 +70,39 @@ public class Login_Steps {
         browserManager.page.getByPlaceholder("Username").click();
         browserManager.page.getByPlaceholder("Username").fill("webdrivers");
     }
+
     @Then("I should be presented with an error message")
     public void i_should_be_presented_with_an_error_message() {
         assertTrue(
                 "Expected login failure message but received: " + loginMessage,
                 "validation failed".equals(loginMessage)
         );
-
     }
+
+    //scenario outline
+
+    @When("I type a username {word}")
+    public void i_type_a_username_webdriver(String username) {
+
+        browserManager.page.getByPlaceholder("username").fill(username);
+    }
+
+    @And("I type a password {word}")
+    public void i_type_a_password_webdriver123(String password) {
+        browserManager.page.getByPlaceholder("password").fill(password);
+    }
+
+    @Then("I should be presented with a login message {string}")
+    public void i_should_be_presented_with_a_login_message(String alertMessage) {
+
+        assertEquals(
+                alertMessage,
+                loginMessage,
+                "Expected login message: " + alertMessage +
+                        " but received: " + loginMessage
+        );
+    }
+
 
 }
 
